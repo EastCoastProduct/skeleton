@@ -1,0 +1,9 @@
+[submodule "api-skeleton"]
+	path = api-skeleton
+	url = https://github.com/EastCoastProduct/api-skeleton.git
+[submodule "web-skeleton"]
+	path = web-skeleton
+	url = https://github.com/EastCoastProduct/web-skeleton.git
+[submodule "super-admin-skeleton"]
+	path = super-admin-skeleton
+	url = https://github.com/EastCoastProduct/super-admin-skeleton.git
