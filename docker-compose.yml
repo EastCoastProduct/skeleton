@@ -1,0 +1,58 @@
+version: '2'
+
+services:
+  ecp_dev_db:
+    image: postgres:9.4
+    container_name: dev_db
+    environment:
+      POSTGRES_USER: dev_user
+      POSTGRES_PASSWORD: ecp1950
+      POSTGRES_DB: dev_db #not required, defaults to POSTGRES_USER
+  ecp_test_db:
+    image: postgres:9.4
+    container_name: test_db
+    environment:
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: ecp1950
+      POSTGRES_DB: test_db #not required, defaults to POSTGRES_USER
+  ecp_api:
+    build: ./api
+    container_name: api_test
+    command: ./docker-start.sh
+    environment:
+      DB: dev_db
+      DB_USER: dev_user
+      DB_PASSWORD: ecp1950
+      DB_NAME: dev_db
+    ports:
+      - '3000:3000'
+    links:
+      - ecp_dev_db:ecp_dev_db
+    volumes:
+      - ./api/:/home/app/src/
+  ecp_web:
+    build: ./web
+    container_name: web_test
+    command: ./docker-start.sh
+    environment:
+      __APP_URL__: web
+      __API_URL__: api
+    ports:
+      - '7000:7000'
+    links:
+      - ecp_api:ecp_api
+    volumes:
+      - ./web/:/home/app/src/
+  ecp_superadmin:
+    build: ./superadmin
+    container_name: superadmin_test
+    command: ./docker-start.sh
+    environment:
+      __APP_URL__: web
+      __API_URL__: api
+    ports:
+      - '9000:9000'
+    links:
+      - ecp_api:ecp_api
+    volumes:
+      - ./superadmin/:/home/app/src/
