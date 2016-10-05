@@ -29,7 +29,7 @@ services:
     links:
       - ecp_dev_db:ecp_dev_db
     volumes:
-      - ./api/:/home/app/src/
+      - ./api-skeleton/:/home/app/src/
   ecp_web:
     build: ./web-skeleton
     container_name: web_test
@@ -42,7 +42,7 @@ services:
     links:
       - ecp_api:ecp_api
     volumes:
-      - ./web/:/home/app/src/
+      - ./web-skeleton/:/home/app/src/
   ecp_superadmin:
     build: ./super-admin-skeleton
     container_name: superadmin_test
@@ -55,4 +55,4 @@ services:
     links:
       - ecp_api:ecp_api
     volumes:
-      - ./superadmin/:/home/app/src/
+      - ./super-admin-skeleton/:/home/app/src/
