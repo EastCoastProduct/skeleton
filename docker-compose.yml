@@ -3,21 +3,21 @@ version: '2'
 services:
   ecp_dev_db:
     image: postgres:9.4
-    container_name: dev_db
+    container_name: ecp_dev_db
     environment:
       POSTGRES_USER: dev_user
       POSTGRES_PASSWORD: ecp1950
       POSTGRES_DB: dev_db #not required, defaults to POSTGRES_USER
   ecp_test_db:
     image: postgres:9.4
-    container_name: test_db
+    container_name: ecp_test_db
     environment:
       POSTGRES_USER: test_user
       POSTGRES_PASSWORD: ecp1950
       POSTGRES_DB: test_db #not required, defaults to POSTGRES_USER
   ecp_api:
     build: ./api-skeleton
-    container_name: api_test
+    container_name: ecp_api
     command: ./docker-start.sh
     environment:
       DB: dev_db
@@ -32,7 +32,7 @@ services:
       - ./api-skeleton/:/home/app/src/
   ecp_web:
     build: ./web-skeleton
-    container_name: web_test
+    container_name: ecp_web
     command: ./docker-start.sh
     environment:
       __APP_URL__: web
@@ -45,7 +45,7 @@ services:
       - ./web-skeleton/:/home/app/src/
   ecp_superadmin:
     build: ./super-admin-skeleton
-    container_name: superadmin_test
+    container_name: ecp_superadmin
     command: ./docker-start.sh
     environment:
       __APP_URL__: web

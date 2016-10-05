@@ -7,3 +7,9 @@
 [submodule "super-admin-skeleton"]
 	path = super-admin-skeleton
 	url = https://github.com/EastCoastProduct/super-admin-skeleton.git
+[api-skeleton "https://github.com/eastcoastproduct/api-skeleton"]
+	master = master
+[web-skeleton "https://github.com/eastcoastproduct/web-skeleton"]
+	master = master
+[super-admin-skeleton "https://github.com/eastcoastproduct/super-admin-skeleton"]
+	master = master
