@@ -1,0 +1,40 @@
+#%RAML 1.0
+title: ECP
+version: v1
+baseUri: http://localhost:3000/
+
+securitySchemes: !include securitySchemes/jsonwebtoken.raml
+
+types:
+  DebugInfo: !include common/errors/debugInfoType.raml
+  Error: !include common/errors/errorType.raml
+
+documentation:
+  - title: Basic information
+    content: !include documentation/basicInfo.txt
+
+/authenticate: !include routes/authenticate/base.raml
+
+/users: !include routes/users/base.raml
+
+/recoverPassword: !include routes/recoverPassword/base.raml
+
+/emailConfirm: !include routes/emailConfirm/base.raml
+
+/404:
+  get:
+    description: All routes that are not documented are handled like this.
+    body:
+      application/json:
+        type: object
+        properties:
+          message: string
+          error:
+            properties:
+              status: number
+        example: {
+          message: "Not found",
+          error: {
+            status: 404
+          }
+        }

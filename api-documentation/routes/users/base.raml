@@ -1,0 +1,382 @@
+
+get:
+  queryParameters:
+    page?:
+      description: |
+        Defines which page of users to list.
+        - If not set it defaults to first page.
+      type: number
+    limit?:
+      description: |
+        Defines the number of users to show per page.
+        - If not set defaults to <b>10</b>
+      type: number
+  description: Paginated list of users.
+  responses:
+    200:
+      body:
+        application/json:
+          type: object
+          properties:
+            count:
+              type: number
+            rows:
+              type: array
+              items:
+                properties:
+                  id: number
+                  bio?:
+                    type: string
+                    maxLength: 1000
+                  confirmed: boolean
+                  email: string
+                  firstname?: string
+                  lastname?: string
+                  createdAt: datetime
+                  updatedAt: datetime
+                  resourceId?: number
+                  image?: string
+          example: !include responses/getList.json
+post:
+  description: Create user.
+  body:
+    application/json:
+      type: object
+      properties:
+        bio?:
+          type: string
+          maxLength: 1000
+        email: string
+        password:
+          type: string
+          minLength: 8
+          description: |
+            Password needs to have:
+              - One uppercase character
+              - One lowercase character
+              - One number
+        firstname?: string
+        lastname?: string
+      example: !include requests/postCreate.json
+  responses:
+    201:
+      description: New user created.
+      body:
+        application/json:
+          type: object
+          properties:
+            id: number
+            bio?:
+              type: string
+              maxLength: 1000
+            confirmed: boolean
+            email: string
+            firstname?: string
+            lastname?: string
+            createdAt: datetime
+            updatedAt: datetime
+            resourceId?: number
+            image?: string
+          example: !include responses/postCreate.json
+    400:
+      description: |
+        Bad request for creating user. There are two scenarios:
+          - Wrong parameters in body
+          - Email sent is already taken by other user
+      body:
+        application/json:
+          type: Error
+          example: !include ../../common/errors/userAlreadyExists.json
+/{userId}:
+  get:
+      description: Show the user.
+      responses:
+        200:
+          body:
+            application/json:
+              type: object
+              properties:
+                id: number
+                bio?:
+                  type: string
+                  maxLength: 1000
+                confirmed: boolean
+                email: string
+                firstname?: string
+                lastname?: string
+                createdAt: datetime
+                updatedAt: datetime
+                resourceId?: number
+                image?: string
+              example: !include responses/getOne.json
+        404:
+          body:
+            application/json:
+              type: Error
+              example: !include ../../common/errors/userNotFound.json
+
+  post:
+    securedBy: [ isConfirmed, isOwner ]
+    description: Update user data.
+    body:
+      multipart/form-data:
+        properties:
+          bio?:
+            type: string
+            maxLength: 1000
+          firstname?: string
+          lastname?: string
+          image?: file
+        example: {
+          bio: "This is the updated bio",
+          firstname: "Updated",
+          lastname: "User",
+          image: "File"
+        }
+      application/json:
+        type: object
+        properties:
+          bio?:
+            type: string
+            maxLength: 1000
+          firstname?: string
+          lastname?: string
+        example: !include requests/postUpdate.json
+    responses:
+      200:
+        description: |
+          There are two scenarios for updating a user:
+            - User properties updated with image
+            - Only user properties updated
+        body:
+          application/json:
+            type: object
+            properties:
+              id: number
+              bio?:
+                type: string
+                maxLength: 1000
+              confirmed: boolean
+              email: string
+              firstname?: string
+              lastname?: string
+              createdAt: datetime
+              updatedAt: datetime
+              resourceId?: number
+              image?: string
+            examples:
+              updateWithImage: {
+                id: 1,
+                bio: "This is the updated bio",
+                confirmed: true,
+                email: "update.user@mail.com",
+                firstname: "Updated",
+                lastname: "User",
+                createdAt: "2016-10-06T21:41:14.000Z",
+                updatedAt: "2016-10-06T21:41:15.000Z",
+                resourceId: 1,
+                image: "https://s3.amazonaws.com/ecp-boilerplate/images/9b4395a0-8c0d-11e6-8927-f93573da9dd0.jpg"
+              }
+              updateProperties: {
+                id: 1,
+                bio: "This is the updated bio",
+                confirmed: true,
+                email: "update.user@mail.com",
+                firstname: "Updated",
+                lastname: "User",
+                createdAt: "2016-10-06T21:41:14.000Z",
+                updatedAt: "2016-10-06T21:41:15.000Z",
+                resourceId: null
+              }
+      403:
+        description: |
+          Trying to update:
+            - other user
+            - not confirmed self
+        body:
+          application/json:
+            type: Error
+            examples:
+              notConfirmed: {
+                message: "User is not confirmed",
+                error: {
+                  message: "User is not confirmed",
+                  status: 403
+                }
+              }
+              notOwner: {
+              message: "Not authorized",
+              error: {
+                message: "Not authorized",
+                status: 403
+              }
+            }
+
+      404:
+        body:
+          application/json:
+            type: Error
+            example: !include ../../common/errors/userNotFound.json
+
+  delete:
+    securedBy: isOwner
+    description: Delete user.
+    responses:
+      200:
+        description: User is deleted.
+        body:
+          application/json:
+            type: object
+            example: { message: "User successfully removed" }
+      403:
+        description: Trying to delete other user.
+        body:
+          application/json:
+            type: Error
+            example: !include ../../common/errors/notAuthorized.json
+      404:
+        body:
+          application/json:
+            type: Error
+            example: !include ../../common/errors/userNotFound.json
+
+  /changeEmail:
+    post:
+      description: Request to change user email address.
+      body:
+        application/json:
+          type: object
+          properties:
+            oldEmail:
+              type: string
+              description: Users current email address.
+            newEmail:
+              type: string
+              description: Users new email address.
+            password:
+              type: string
+              minLength: 8
+              description: |
+                Password needs to have:
+                  - One uppercase character
+                  - One lowercase character
+                  - One number
+          example: !include requests/postChangeEmail.json
+      responses:
+        200:
+          body:
+            application/json:
+              type: object
+              properties:
+                message: string
+              example: !include responses/postChangeEmail.json
+        400:
+          description: |
+            Bad requests.
+            - Wrong user password
+            - New email is already in use
+          body:
+            application/json:
+              type: Error
+              examples:
+                wrongPassword: {
+                  message: "Wrong password",
+                  error: {
+                    message: "Wrong password",
+                    status: 400
+                  }
+                }
+                emailInUse: {
+                  message: "Email is already in use",
+                  error: {
+                    message: "Email is already in use",
+                    status: 400
+                  }
+                }
+        404:
+          description: If user sent wrong oldEmail.
+          body:
+            application/json:
+              type: Error
+              example: !include ../../common/errors/userNotFound.json
+
+  /changePassword:
+    post:
+      securedBy: isConfirmed
+      description: User change password
+      body:
+        application/json:
+          type: object
+          properties:
+            oldPassword:
+              type: string
+              minLength: 8
+              description: |
+                Password needs to have:
+                  - One uppercase character
+                  - One lowercase character
+                  - One number
+            newPassword:
+              type: string
+              minLength: 8
+              description: |
+                Password needs to have:
+                  - One uppercase character
+                  - One lowercase character
+                  - One number
+          example: !include requests/postChangePassword.json
+      responses:
+        200:
+          description: Successfully changed user password.
+          body:
+            application/json:
+              example: {
+                message: "Password successfully changed"
+              }
+        403:
+          description: Trying to change password when not confirmed.
+          body:
+            application/json:
+              type: Error
+              example: !include ../../common/errors/notAuthorized.json
+        400:
+          description: |
+            Bad requests made for user change password. There are two scenarios.
+              - Wrong old password send
+          body:
+            application/json:
+              type: Error
+              example: {
+                message: "Wrong password",
+                error: {
+                  message: "Wrong password",
+                  status: 400
+                }
+              }
+  /resendConfirmation:
+    post:
+      securedBy: isOwner
+      description: |
+        Resend the confirmation email. There are two scenarios:
+          - New user created and needs the confirmation email resent
+          - Existing user wants to change email and needs the confirmation email resent
+      responses:
+        200:
+          body:
+            application/json:
+              type: object
+              properties:
+                message: string
+              example: { message: "Your confirmation email has been sent" }
+        403:
+          description: Trying to resend confirmation for other user.
+          body:
+            application/json:
+              type: Error
+              example: !include ../../common/errors/notAuthorized.json
+        404:
+          description: User does not exist.
+          body:
+            application/json:
+              type: Error
+              example: !include ../../common/errors/userNotFound.json

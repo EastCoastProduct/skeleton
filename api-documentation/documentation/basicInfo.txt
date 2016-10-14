@@ -1,0 +1,62 @@
+This is a short introduction on how to use the ECP API Boilerplate. Things that are
+documented:<br>
+  - Most errors responses
+  - Requests
+  - Responses
+  - Examples
+  - Routes
+  - Descriptions for each error, route, request and response
+
+Some error handling of requests are generically validated and are not documented
+here, because their responses are always the same. Most of them are mentioned in
+the description and their logic is straightforward.
+
+An example of a invalid request sent for authentication:
+<pre>
+{
+  "email": "wrong.mail"
+}
+</pre>
+
+An example error:
+
+<pre>
+{
+  "message": "Parameters error",
+  "debugInfo": [
+    {
+      "path": "email",
+      "message": "has to be valid email"
+    },
+    {
+      "path": "password",
+      "message": "required"
+    }
+  ],
+  "error": {
+    "message": "Parameters error",
+    "status": 400,
+    "debugInfo": [
+      {
+        "path": "email",
+        "message": "has to be valid email"
+      },
+      {
+        "path": "password",
+        "message": "required"
+      }
+    ]
+  }
+}
+</pre>
+
+Some formats are explicitly described, but some are straightforward and
+not described:
+  - <b>email</b> <i>(valid email address)</i>
+  - <b>ip</b> <i>(valid ip address)</i>
+
+<i>
+*
+  Only valid requests are made in the routes.
+  Invalid requests will be handled by the example above.
+</i>

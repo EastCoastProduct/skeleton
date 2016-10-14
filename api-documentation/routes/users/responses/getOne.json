@@ -1,0 +1,12 @@
+{
+  "id": 1,
+  "bio": "Some user bio",
+  "confirmed": true,
+  "email": "user@mail.com",
+  "firstname": "name",
+  "lastname": "lastname",
+  "createdAt": "2016-10-06T21:41:15.000Z",
+  "updatedAt": "2016-10-06T21:41:15.000Z",
+  "resourceId": 1,
+  "image": "https://s3.amazonaws.com/ecp-boilerplate/images/9b4395a0-8c0d-11e6-8927-f93573da9dd0.jpg"
+}

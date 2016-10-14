@@ -1,0 +1,39 @@
+post:
+  description: |
+    Used for email confirmation.
+    There are two scenarios:
+      - If a user requested to change email, it will update the user email
+      - If a new account was created and the user followed the link in his email it will confirm his email address
+  body:
+    application/json:
+      type: object
+      properties:
+        token: string
+      example: {
+        token: "123e4567-e89b-12d3-a456-426655440000"
+      }
+  responses:
+    200:
+      body:
+        application/json:
+          type: object
+          properties:
+            message: string
+          example: { message: "Email confirmed" }
+    400:
+      body:
+        application/json:
+          type: Error
+          example: !include ../../common/errors/userAlreadyExists.json
+    404:
+      body:
+        application/json:
+          type: Error
+          examples:
+            tokenDoesNotExist: {
+              message: "Confirmation email does not exist",
+              error: {
+                message: "Confirmation email does not exist",
+                status: 404
+              }
+            }

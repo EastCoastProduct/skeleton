@@ -1,0 +1,76 @@
+post:
+  description: User reset password
+  body:
+    application/json:
+      type: object
+      properties:
+        email: string
+      example: {
+        email: "recover@mail.com"
+      }
+  responses:
+    200:
+      description: Successfully sent password recovery mail to user email.
+      body:
+        application/json:
+          type: object
+          properties:
+            message: string
+          example: {
+            message: "Your password recovery email has been sent"
+          }
+    404:
+      body:
+        application/json:
+          type: Error
+          example: !include ../../common/errors/userNotFound.json
+
+/{token}:
+  post:
+    description: User recover password
+    body:
+      application/json:
+        type: object
+        properties:
+          password:
+            type: string
+            minLength: 8
+            description: |
+              Password needs to have:
+                - One uppercase character
+                - One lowercase character
+                - One number
+        example: {
+          password: "NewPassword12345"
+        }
+    responses:
+      200:
+        description: Successfully updated user password.
+        body:
+          application/json:
+            example: {
+              message: "Your password has been changed"
+            }
+      404:
+        description: |
+          There two scenarios:
+          - Token does not exist
+          - User with associated token does not exist 
+        body:
+          application/json:
+            type: Error
+            examples:
+              tokenDoesNotExist: {
+                message: "Recovery token not found",
+                error: {
+                  message: "Recovery token not found",
+                  status: 404
+                }
+              }
+              userDoesNotExist: {
+                message: "User not found",
+                error: {
+                    message: "User not found",
+                    status: 404
+                  }
+              }

@@ -1,0 +1,31 @@
+isUser:
+  type: x-token
+  describedBy:
+    headers:
+      Authorization:
+        type: string
+        description: |
+          Header used to recognize the user.<br>
+          <b>Format:</b> Bearer TOKEN
+
+isConfirmed:
+  type: x-token
+  describedBy:
+    headers:
+      Authorization:
+        type: string
+        description: |
+          Header used to recognize the <b>confirmed</b> user.
+          <br>
+          <b>Format:</b> Bearer TOKEN
+
+isOwner:
+  type: x-token
+  describedBy:
+    headers:
+      Authorization:
+        type: string
+        description: |
+          Header to recognize if userId is matching the URI parameter userId
+          <br>
+          <b>Format:</b> Bearer TOKEN

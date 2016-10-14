@@ -1,0 +1,7 @@
+{
+  "bio": "This is the new users bio",
+  "email": "new.user@mail.com",
+  "password": "newUserPassword123",
+  "firstname": "New",
+  "lastname": "User"
+}

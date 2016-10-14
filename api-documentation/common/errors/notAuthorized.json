@@ -1,0 +1,7 @@
+{
+  "message": "Not authorized",
+  "error": {
+    "message": "Not authorized",
+    "status": 403
+  }
+}

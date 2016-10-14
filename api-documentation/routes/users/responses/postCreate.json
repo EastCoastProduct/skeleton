@@ -1,0 +1,11 @@
+{
+  "id": 1,
+  "bio": "This is the new users bio",
+  "confirmed": false,
+  "email": "new.user@mail.com",
+  "firstname": "New",
+  "lastname": "User",
+  "createdAt": "2016-10-13T10:28:37.000Z",
+  "updatedAt": "2016-10-13T10:28:37.000Z",
+  "resourceId": null
+}

@@ -1,0 +1,7 @@
+{
+  "message": "User already exists",
+  "error": {
+    "message": "User already exists",
+    "status": 400
+  }
+}

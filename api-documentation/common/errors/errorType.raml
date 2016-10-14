@@ -1,0 +1,21 @@
+description: Generic error.
+type: object
+properties:
+  message:
+    type: string
+    description: Error message thrown from API.
+    required: true
+  debugInfo:
+    type: DebugInfo[]
+    description: Array of objects containing path to wrong property and error message.
+    required: false
+  error:
+    properties:
+      message: string
+      debugInfo:
+        type: DebugInfo[]
+        required: false
+      status:
+        type: number
+        description: Response status.
+        required: true
