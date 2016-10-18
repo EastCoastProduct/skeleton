@@ -1,0 +1,513 @@
+<!DOCTYPE HTML><html><head><title>ECP API documentation</title><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="https://github.com/raml2html/raml2html 4.0.0-beta8"><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script><script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">
+      $(document).ready(function() {
+        $('.page-header pre code, .top-resource-description pre code, .modal-body pre code').each(function(i, block) {
+          hljs.highlightBlock(block);
+        });
+
+        $('[data-toggle]').click(function() {
+          var selector = $(this).data('target') + ' pre code';
+          $(selector).each(function(i, block) {
+            hljs.highlightBlock(block);
+          });
+        });
+
+        // open modal on hashes like #_action_get
+        $(window).bind('hashchange', function(e) {
+          var anchor_id = document.location.hash.substr(1); //strip #
+          var element = $('#' + anchor_id);
+
+          // do we have such element + is it a modal?  --> show it
+          if (element.length && element.hasClass('modal')) {
+            element.modal('show');
+          }
+        });
+
+        // execute hashchange on first page load
+        $(window).trigger('hashchange');
+
+        // remove url fragment on modal hide
+        $('.modal').on('hidden.bs.modal', function() {
+          try {
+            if (history && history.replaceState) {
+                history.replaceState({}, '', '#');
+            }
+          } catch(e) {}
+        });
+      });
+    </script><style>
+      .hljs {
+        background: transparent;
+      }
+      .parent {
+        color: #999;
+      }
+      .list-group-item > .badge {
+        float: none;
+        margin-right: 6px;
+      }
+      .panel-title > .methods {
+        float: right;
+      }
+      .badge {
+        border-radius: 0;
+        text-transform: uppercase;
+        width: 70px;
+        font-weight: normal;
+        color: #f3f3f6;
+        line-height: normal;
+      }
+      .badge_get {
+        background-color: #63a8e2;
+      }
+      .badge_post {
+        background-color: #6cbd7d;
+      }
+      .badge_put {
+        background-color: #22bac4;
+      }
+      .badge_delete {
+        background-color: #d26460;
+      }
+      .badge_patch {
+        background-color: #ccc444;
+      }
+      .list-group, .panel-group {
+        margin-bottom: 0;
+      }
+      .panel-group .panel+.panel-white {
+        margin-top: 0;
+      }
+      .panel-group .panel-white {
+        border-bottom: 1px solid #F5F5F5;
+        border-radius: 0;
+      }
+      .panel-white:last-child {
+        border-bottom-color: white;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+      }
+      .panel-white .panel-heading {
+        background: white;
+      }
+      .tab-pane ul {
+        padding-left: 2em;
+      }
+      .tab-pane h1 {
+        font-size: 1.3em;
+      }
+      .tab-pane h2 {
+        font-size: 1.2em;
+        padding-bottom: 4px;
+        border-bottom: 1px solid #ddd;
+      }
+      .tab-pane h3 {
+        font-size: 1.1em;
+      }
+      .tab-content {
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+      }
+      #sidebar {
+        margin-top: 30px;
+        padding-right: 5px;
+        overflow: auto;
+        height: 90%;
+      }
+      .top-resource-description {
+        border-bottom: 1px solid #ddd;
+        background: #fcfcfc;
+        padding: 15px 15px 0 15px;
+        margin: -15px -15px 10px -15px;
+      }
+      .resource-description {
+        border-bottom: 1px solid #fcfcfc;
+        background: #fcfcfc;
+        padding: 15px 15px 0 15px;
+        margin: -15px -15px 10px -15px;
+      }
+      .resource-description p:last-child {
+        margin: 0;
+      }
+      .list-group .badge {
+        float: left;
+      }
+      .method_description {
+        margin-left: 85px;
+      }
+      .method_description p:last-child {
+        margin: 0;
+      }
+      .list-group-item {
+        cursor: pointer;
+      }
+      .list-group-item:hover {
+        background-color: #f5f5f5;
+      }
+
+      pre code {
+        overflow: auto;
+        word-wrap: normal;
+        white-space: pre;
+      }
+    </style></head><body data-spy="scroll" data-target="#sidebar"><div class="container"><div class="row"><div class="col-md-9" role="main"><div class="page-header"><h1>ECP API documentation <small>version v1</small></h1><p>http://localhost:3000/</p><h3 id="basic_information"><a href="#basic_information">Basic information</a></h3><p>This is a short introduction on how to use the ECP API Boilerplate. Things that are documented:<br></p><ul><li>Most errors responses</li><li>Requests</li><li>Responses</li><li>Examples</li><li>Routes</li><li>Descriptions for each error, route, request and response</li></ul><p>Some error handling of requests are generically validated and are not documented here, because their responses are always the same. Most of them are mentioned in the description and their logic is straightforward.</p><p>An example of a invalid request sent for authentication:</p><pre>
+{
+  "email": "wrong.mail"
+}
+</pre><p>An example error:</p><pre>
+{
+  "message": "Parameters error",
+  "debugInfo": [
+    {
+      "path": "email",
+      "message": "has to be valid email"
+    },
+    {
+      "path": "password",
+      "message": "required"
+    }
+  ],
+  "error": {
+    "message": "Parameters error",
+    "status": 400,
+    "debugInfo": [
+      {
+        "path": "email",
+        "message": "has to be valid email"
+      },
+      {
+        "path": "password",
+        "message": "required"
+      }
+    ]
+  }
+}
+</pre><p>Some formats are explicitly described, but some are straightforward and not described:</p><ul><li><b>email</b> <i>(valid email address)</i></li><li><b>ip</b> <i>(valid ip address)</i></li></ul><p><i>* Only valid requests are made in the routes. Invalid requests will be handled by the example above.</i></p></div><div class="panel panel-default"><div class="panel-heading"><h3 id="authenticate" class="panel-title">/authenticate</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_authenticate"><span class="parent"></span>/authenticate</a> <span class="methods"><a href="#authenticate_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_authenticate" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#authenticate_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"><p>Authenticate user</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="authenticate_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent"></span>/authenticate</h4></div><div class="modal-body"><div class="alert alert-info"><p>Authenticate user</p></div><ul class="nav nav-tabs"><li class="active"><a href="#authenticate_post_request" data-toggle="tab">Request</a></li><li><a href="#authenticate_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="authenticate_post_request"><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>email</strong>: <em>required (string)</em></li><li><strong>password</strong>: <em>required (string)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "email": "regular@mail.com",
+  "password": "Password12345"
+}
+</code></pre></div><div class="tab-pane" id="authenticate_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>Successfully authenticated user.</p><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>token</strong>: <em>required (string)</em></li><li><strong>user</strong>: <em>required (object)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVC802ksjic2VySWQiOjIsImlhdCI6MTQ3NjIwMDQwNiwiZXhwIjoyMDgxMDAwNDA2fQ.AeEXmnJQTsyK-1iT2fBZpBIc64Jpd1ddM08YBTx9P4U",
+  "user": {
+    "id": 1,
+    "bio": "Some user bio",
+    "confirmed": true,
+    "email": "user@mail.com",
+    "firstname": "name",
+    "lastname": "lastname",
+    "createdAt": "2016-10-06T21:41:15.000Z",
+    "updatedAt": "2016-10-06T21:41:15.000Z",
+    "resourceId": 1,
+    "image": "https://s3.amazonaws.com/ecp-boilerplate/images/9b4395a0-8c0d-11e6-8927-f93573da9dd0.jpg"
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/400" target="_blank">400</a></h2><p>Bad requests made for authentication. There are two scenarios.</p><ul><li>Wrong parameters in body</li><li>Wrong password</li></ul><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em><p>Error message thrown from API.</p></li><li><strong>debugInfo</strong>: <em>(array)</em><p>Array of objects containing path to wrong property and error message.</p></li><li><strong>error</strong>: <em>required (object)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "Parameters error",
+  "debugInfo": [
+    {
+      "path": "email",
+      "message": "Email is required"
+    },
+    {
+      "path": "password",
+      "message": "Password is required"
+    }
+  ],
+  "error": {
+    "message": "Parameters error",
+    "debugInfo": [
+      {
+        "path": "email",
+        "message": "Email is required"
+      },
+      {
+        "path": "password",
+        "message": "Password is required"
+      }
+    ],
+    "status": 400
+  }
+}</code></pre><pre><code>{
+  "message": "Wrong password",
+  "error": {
+    "message": "Wrong password",
+    "status": 400
+  }
+}</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em><p>Error message thrown from API.</p></li><li><strong>debugInfo</strong>: <em>(array)</em><p>Array of objects containing path to wrong property and error message.</p></li><li><strong>error</strong>: <em>required (object)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "User not found",
+  "error": {
+      "message": "User not found",
+      "status": 404
+    }
+}
+</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="users" class="panel-title">/users</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_users"><span class="parent"></span>/users</a> <span class="methods"><a href="#users_get"><span class="badge badge_get">get</span></a> <a href="#users_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_users" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#users_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Paginated list of users.</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#users_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"><p>Create user.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="users_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent"></span>/users</h4></div><div class="modal-body"><div class="alert alert-info"><p>Paginated list of users.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#users_get_request" data-toggle="tab">Request</a></li><li><a href="#users_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="users_get_request"><h3>Query Parameters</h3><ul><li><strong>page</strong>: <em>(number)</em><p>Defines which page of users to list.</p><ul><li>If not set it defaults to first page.</li></ul></li><li><strong>limit</strong>: <em>(number)</em><p>Defines the number of users to show per page.</p><ul><li>If not set defaults to <b>10</b></li></ul></li></ul></div><div class="tab-pane" id="users_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>count</strong>: <em>required (number)</em></li><li><strong>rows</strong>: <em>required (array)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "count": 5,
+  "rows": [{
+    "id": 1,
+    "confirmed": true,
+    "email": "regular@mail.com",
+    "firstname": "regular",
+    "lastname": "regular",
+    "createdAt": "2016-10-06T21:41:14.000Z",
+    "updatedAt": "2016-10-06T21:41:14.000Z"
+  }, {
+    "id": 2,
+    "confirmed": true,
+    "email": "user@mail.com",
+    "firstname": "name",
+    "lastname": "lastname",
+    "createdAt": "2016-10-06T21:41:15.000Z",
+    "updatedAt": "2016-10-06T21:41:15.000Z",
+    "resourceId": 1,
+    "image": "https://s3.amazonaws.com/ecp-boilerplate/images/9b4395a0-8c0d-11e6-8927-f93573da9dd0.jpg"
+  }, {
+    "id": 3,
+    "confirmed": true,
+    "email": "john@doe.com",
+    "firstname": "John",
+    "lastname": "Doe",
+    "createdAt": "2016-10-06T21:41:15.000Z",
+    "updatedAt": "2016-10-06T21:41:15.000Z"
+  }, {
+    "id": 4,
+    "confirmed": false,
+    "email": "not.confirmed@mail.com",
+    "firstname": "firstname3",
+    "lastname": "lastname3",
+    "createdAt": "2016-10-06T21:41:15.000Z",
+    "updatedAt": "2016-10-06T21:41:15.000Z"
+  }, {
+    "id": 5,
+    "confirmed": true,
+    "email": "firstname4.lastname4@mail.com",
+    "firstname": "firstname4",
+    "lastname": "lastname4",
+    "createdAt": "2016-10-06T21:41:15.000Z",
+    "updatedAt": "2016-10-06T21:41:15.000Z",
+    "resourceId": 2,
+    "image": "https://s3.amazonaws.com/ecp-boilerplate/images/9b43bcb0-8c0d-11e6-8927-f93573da9dd0.jpg"
+  }]
+}
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="users_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent"></span>/users</h4></div><div class="modal-body"><div class="alert alert-info"><p>Create user.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#users_post_request" data-toggle="tab">Request</a></li><li><a href="#users_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="users_post_request"><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>bio</strong>: <em>(string - maxLength: 1000)</em></li><li><strong>email</strong>: <em>required (string)</em></li><li><strong>password</strong>: <em>required (string - minLength: 8)</em><p>Password needs to have:</p><ul><li>One uppercase character</li><li>One lowercase character</li><li>One number</li></ul></li><li><strong>firstname</strong>: <em>(string)</em></li><li><strong>lastname</strong>: <em>(string)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "bio": "This is the new users bio",
+  "email": "new.user@mail.com",
+  "password": "newUserPassword123",
+  "firstname": "New",
+  "lastname": "User"
+}
+</code></pre></div><div class="tab-pane" id="users_post_response"><h2>HTTP status code <a href="http://httpstatus.es/201" target="_blank">201</a></h2><p>New user created.</p><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>id</strong>: <em>required (number)</em></li><li><strong>bio</strong>: <em>(string - maxLength: 1000)</em></li><li><strong>confirmed</strong>: <em>required (boolean)</em></li><li><strong>email</strong>: <em>required (string)</em></li><li><strong>firstname</strong>: <em>(string)</em></li><li><strong>lastname</strong>: <em>(string)</em></li><li><strong>createdAt</strong>: <em>required (datetime)</em></li><li><strong>updatedAt</strong>: <em>required (datetime)</em></li><li><strong>resourceId</strong>: <em>(number)</em></li><li><strong>image</strong>: <em>(string)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "id": 1,
+  "bio": "This is the new users bio",
+  "confirmed": false,
+  "email": "new.user@mail.com",
+  "firstname": "New",
+  "lastname": "User",
+  "createdAt": "2016-10-13T10:28:37.000Z",
+  "updatedAt": "2016-10-13T10:28:37.000Z",
+  "resourceId": null
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/400" target="_blank">400</a></h2><p>Bad request for creating user. There are two scenarios:</p><ul><li>Wrong parameters in body</li><li>Email sent is already taken by other user</li></ul><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em><p>Error message thrown from API.</p></li><li><strong>debugInfo</strong>: <em>(array)</em><p>Array of objects containing path to wrong property and error message.</p></li><li><strong>error</strong>: <em>required (object)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "User already exists",
+  "error": {
+    "message": "User already exists",
+    "status": 400
+  }
+}
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_users__userid_"><span class="parent">/users</span>/{userId}</a> <span class="methods"><a href="#users__userid__get"><span class="badge badge_get">get</span></a> <a href="#users__userid__post"><span class="badge badge_post">post <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a> <a href="#users__userid__delete"><span class="badge badge_delete">delete <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_users__userid_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#users__userid__get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Show the user.</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#users__userid__post'" class="list-group-item"><span class="badge badge_post">post <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Update user data.</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#users__userid__delete'" class="list-group-item"><span class="badge badge_delete">delete <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Delete user.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="users__userid__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/users</span>/{userId}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Show the user.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#users__userid__get_request" data-toggle="tab">Request</a></li><li><a href="#users__userid__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="users__userid__get_request"><h3>URI Parameters</h3><ul><li><strong>userId</strong>: <em>required (string)</em></li></ul></div><div class="tab-pane" id="users__userid__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>id</strong>: <em>required (number)</em></li><li><strong>bio</strong>: <em>(string - maxLength: 1000)</em></li><li><strong>confirmed</strong>: <em>required (boolean)</em></li><li><strong>email</strong>: <em>required (string)</em></li><li><strong>firstname</strong>: <em>(string)</em></li><li><strong>lastname</strong>: <em>(string)</em></li><li><strong>createdAt</strong>: <em>required (datetime)</em></li><li><strong>updatedAt</strong>: <em>required (datetime)</em></li><li><strong>resourceId</strong>: <em>(number)</em></li><li><strong>image</strong>: <em>(string)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "id": 1,
+  "bio": "Some user bio",
+  "confirmed": true,
+  "email": "user@mail.com",
+  "firstname": "name",
+  "lastname": "lastname",
+  "createdAt": "2016-10-06T21:41:15.000Z",
+  "updatedAt": "2016-10-06T21:41:15.000Z",
+  "resourceId": 1,
+  "image": "https://s3.amazonaws.com/ecp-boilerplate/images/9b4395a0-8c0d-11e6-8927-f93573da9dd0.jpg"
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em><p>Error message thrown from API.</p></li><li><strong>debugInfo</strong>: <em>(array)</em><p>Array of objects containing path to wrong property and error message.</p></li><li><strong>error</strong>: <em>required (object)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "User not found",
+  "error": {
+      "message": "User not found",
+      "status": 404
+    }
+}
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="users__userid__post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/users</span>/{userId}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Update user data.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>isConfirmed</b></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>isOwner</b></div><ul class="nav nav-tabs"><li class="active"><a href="#users__userid__post_request" data-toggle="tab">Request</a></li><li><a href="#users__userid__post_response" data-toggle="tab">Response</a></li><li><a href="#users__userid__post_securedby" data-toggle="tab">Security</a></li></ul><div class="tab-content"><div class="tab-pane active" id="users__userid__post_request"><h3>URI Parameters</h3><ul><li><strong>userId</strong>: <em>required (string)</em></li></ul><h3>Body</h3><p><strong>Media type</strong>: multipart/form-data</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>bio</strong>: <em>(string - maxLength: 1000)</em></li><li><strong>firstname</strong>: <em>(string)</em></li><li><strong>lastname</strong>: <em>(string)</em></li><li><strong>image</strong>: <em>(file)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "bio": "This is the updated bio",
+  "firstname": "Updated",
+  "lastname": "User",
+  "image": "File"
+}</code></pre><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>bio</strong>: <em>(string - maxLength: 1000)</em></li><li><strong>firstname</strong>: <em>(string)</em></li><li><strong>lastname</strong>: <em>(string)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "bio": "This is the updated bio",
+  "firstname": "Updated",
+  "lastname": "User"
+}
+</code></pre></div><div class="tab-pane" id="users__userid__post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>There are two scenarios for updating a user:</p><ul><li>User properties updated with image</li><li>Only user properties updated</li></ul><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>id</strong>: <em>required (number)</em></li><li><strong>bio</strong>: <em>(string - maxLength: 1000)</em></li><li><strong>confirmed</strong>: <em>required (boolean)</em></li><li><strong>email</strong>: <em>required (string)</em></li><li><strong>firstname</strong>: <em>(string)</em></li><li><strong>lastname</strong>: <em>(string)</em></li><li><strong>createdAt</strong>: <em>required (datetime)</em></li><li><strong>updatedAt</strong>: <em>required (datetime)</em></li><li><strong>resourceId</strong>: <em>(number)</em></li><li><strong>image</strong>: <em>(string)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "id": 1,
+  "bio": "This is the updated bio",
+  "confirmed": true,
+  "email": "update.user@mail.com",
+  "firstname": "Updated",
+  "lastname": "User",
+  "createdAt": "2016-10-06T21:41:14.000Z",
+  "updatedAt": "2016-10-06T21:41:15.000Z",
+  "resourceId": 1,
+  "image": "https://s3.amazonaws.com/ecp-boilerplate/images/9b4395a0-8c0d-11e6-8927-f93573da9dd0.jpg"
+}</code></pre><pre><code>{
+  "id": 1,
+  "bio": "This is the updated bio",
+  "confirmed": true,
+  "email": "update.user@mail.com",
+  "firstname": "Updated",
+  "lastname": "User",
+  "createdAt": "2016-10-06T21:41:14.000Z",
+  "updatedAt": "2016-10-06T21:41:15.000Z",
+  "resourceId": null
+}</code></pre><h2>HTTP status code <a href="http://httpstatus.es/403" target="_blank">403</a></h2><p>Trying to update:</p><ul><li>other user</li><li>not confirmed self</li></ul><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em><p>Error message thrown from API.</p></li><li><strong>debugInfo</strong>: <em>(array)</em><p>Array of objects containing path to wrong property and error message.</p></li><li><strong>error</strong>: <em>required (object)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "User is not confirmed",
+  "error": {
+    "message": "User is not confirmed",
+    "status": 403
+  }
+}</code></pre><pre><code>{
+  "message": "Not authorized",
+  "error": {
+    "message": "Not authorized",
+    "status": 403
+  }
+}</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em><p>Error message thrown from API.</p></li><li><strong>debugInfo</strong>: <em>(array)</em><p>Array of objects containing path to wrong property and error message.</p></li><li><strong>error</strong>: <em>required (object)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "User not found",
+  "error": {
+      "message": "User not found",
+      "status": 404
+    }
+}
+</code></pre></div><div class="tab-pane" id="users__userid__post_securedby"><h1>Secured by isConfirmed</h1><h3>Headers</h3><ul><li><strong>Authorization</strong>: <em>required (string)</em><p>Header used to recognize the <b>confirmed</b> user.<br><b>Format:</b> Bearer TOKEN</p></li></ul><h1>Secured by isOwner</h1><h3>Headers</h3><ul><li><strong>Authorization</strong>: <em>required (string)</em><p>Header to recognize if userId is matching the URI parameter userId<br><b>Format:</b> Bearer TOKEN</p></li></ul></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="users__userid__delete"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_delete">delete <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/users</span>/{userId}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Delete user.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>isOwner</b></div><ul class="nav nav-tabs"><li class="active"><a href="#users__userid__delete_request" data-toggle="tab">Request</a></li><li><a href="#users__userid__delete_response" data-toggle="tab">Response</a></li><li><a href="#users__userid__delete_securedby" data-toggle="tab">Security</a></li></ul><div class="tab-content"><div class="tab-pane active" id="users__userid__delete_request"><h3>URI Parameters</h3><ul><li><strong>userId</strong>: <em>required (string)</em></li></ul></div><div class="tab-pane" id="users__userid__delete_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>User is deleted.</p><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "User successfully removed"
+}</code></pre><h2>HTTP status code <a href="http://httpstatus.es/403" target="_blank">403</a></h2><p>Trying to delete other user.</p><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em><p>Error message thrown from API.</p></li><li><strong>debugInfo</strong>: <em>(array)</em><p>Array of objects containing path to wrong property and error message.</p></li><li><strong>error</strong>: <em>required (object)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "Not authorized",
+  "error": {
+    "message": "Not authorized",
+    "status": 403
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em><p>Error message thrown from API.</p></li><li><strong>debugInfo</strong>: <em>(array)</em><p>Array of objects containing path to wrong property and error message.</p></li><li><strong>error</strong>: <em>required (object)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "User not found",
+  "error": {
+      "message": "User not found",
+      "status": 404
+    }
+}
+</code></pre></div><div class="tab-pane" id="users__userid__delete_securedby"><h1>Secured by isOwner</h1><h3>Headers</h3><ul><li><strong>Authorization</strong>: <em>required (string)</em><p>Header to recognize if userId is matching the URI parameter userId<br><b>Format:</b> Bearer TOKEN</p></li></ul></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_users__userid__changeemail"><span class="parent">/users/{userId}</span>/changeEmail</a> <span class="methods"><a href="#users__userid__changeemail_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_users__userid__changeemail" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#users__userid__changeemail_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"><p>Request to change user email address.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="users__userid__changeemail_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent">/users/{userId}</span>/changeEmail</h4></div><div class="modal-body"><div class="alert alert-info"><p>Request to change user email address.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#users__userid__changeemail_post_request" data-toggle="tab">Request</a></li><li><a href="#users__userid__changeemail_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="users__userid__changeemail_post_request"><h3>URI Parameters</h3><ul><li><strong>userId</strong>: <em>required (string)</em></li></ul><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>oldEmail</strong>: <em>required (string)</em><p>Users current email address.</p></li><li><strong>newEmail</strong>: <em>required (string)</em><p>Users new email address.</p></li><li><strong>password</strong>: <em>required (string - minLength: 8)</em><p>Password needs to have:</p><ul><li>One uppercase character</li><li>One lowercase character</li><li>One number</li></ul></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "oldEmail": "regular@mail.com",
+  "newEmail": "new.regular@mail.com",
+  "password": "Password123"
+}
+</code></pre></div><div class="tab-pane" id="users__userid__changeemail_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "An email has been sent to your new email address"
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/400" target="_blank">400</a></h2><p>Bad requests.</p><ul><li>Wrong user password</li><li>New email is already in use</li></ul><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em><p>Error message thrown from API.</p></li><li><strong>debugInfo</strong>: <em>(array)</em><p>Array of objects containing path to wrong property and error message.</p></li><li><strong>error</strong>: <em>required (object)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "Wrong password",
+  "error": {
+    "message": "Wrong password",
+    "status": 400
+  }
+}</code></pre><pre><code>{
+  "message": "Email is already in use",
+  "error": {
+    "message": "Email is already in use",
+    "status": 400
+  }
+}</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>If user sent wrong oldEmail.</p><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em><p>Error message thrown from API.</p></li><li><strong>debugInfo</strong>: <em>(array)</em><p>Array of objects containing path to wrong property and error message.</p></li><li><strong>error</strong>: <em>required (object)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "User not found",
+  "error": {
+      "message": "User not found",
+      "status": 404
+    }
+}
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_users__userid__changepassword"><span class="parent">/users/{userId}</span>/changePassword</a> <span class="methods"><a href="#users__userid__changepassword_post"><span class="badge badge_post">post <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_users__userid__changepassword" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#users__userid__changepassword_post'" class="list-group-item"><span class="badge badge_post">post <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>User change password</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="users__userid__changepassword_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/users/{userId}</span>/changePassword</h4></div><div class="modal-body"><div class="alert alert-info"><p>User change password</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>isConfirmed</b></div><ul class="nav nav-tabs"><li class="active"><a href="#users__userid__changepassword_post_request" data-toggle="tab">Request</a></li><li><a href="#users__userid__changepassword_post_response" data-toggle="tab">Response</a></li><li><a href="#users__userid__changepassword_post_securedby" data-toggle="tab">Security</a></li></ul><div class="tab-content"><div class="tab-pane active" id="users__userid__changepassword_post_request"><h3>URI Parameters</h3><ul><li><strong>userId</strong>: <em>required (string)</em></li></ul><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>oldPassword</strong>: <em>required (string - minLength: 8)</em><p>Password needs to have:</p><ul><li>One uppercase character</li><li>One lowercase character</li><li>One number</li></ul></li><li><strong>newPassword</strong>: <em>required (string - minLength: 8)</em><p>Password needs to have:</p><ul><li>One uppercase character</li><li>One lowercase character</li><li>One number</li></ul></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "oldPassword": "Password123",
+  "newPassword": "NewPassword12345"
+}
+</code></pre></div><div class="tab-pane" id="users__userid__changepassword_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>Successfully changed user password.</p><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "Password successfully changed"
+}</code></pre><h2>HTTP status code <a href="http://httpstatus.es/400" target="_blank">400</a></h2><p>Bad requests made for user change password. There are two scenarios.</p><ul><li>Wrong old password send</li></ul><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em><p>Error message thrown from API.</p></li><li><strong>debugInfo</strong>: <em>(array)</em><p>Array of objects containing path to wrong property and error message.</p></li><li><strong>error</strong>: <em>required (object)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "Wrong password",
+  "error": {
+    "message": "Wrong password",
+    "status": 400
+  }
+}</code></pre><h2>HTTP status code <a href="http://httpstatus.es/403" target="_blank">403</a></h2><p>Trying to change password when not confirmed.</p><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em><p>Error message thrown from API.</p></li><li><strong>debugInfo</strong>: <em>(array)</em><p>Array of objects containing path to wrong property and error message.</p></li><li><strong>error</strong>: <em>required (object)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "Not authorized",
+  "error": {
+    "message": "Not authorized",
+    "status": 403
+  }
+}
+</code></pre></div><div class="tab-pane" id="users__userid__changepassword_post_securedby"><h1>Secured by isConfirmed</h1><h3>Headers</h3><ul><li><strong>Authorization</strong>: <em>required (string)</em><p>Header used to recognize the <b>confirmed</b> user.<br><b>Format:</b> Bearer TOKEN</p></li></ul></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_users__userid__resendconfirmation"><span class="parent">/users/{userId}</span>/resendConfirmation</a> <span class="methods"><a href="#users__userid__resendconfirmation_post"><span class="badge badge_post">post <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_users__userid__resendconfirmation" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#users__userid__resendconfirmation_post'" class="list-group-item"><span class="badge badge_post">post <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Resend the confirmation email. There are two scenarios:</p><ul><li>New user created and needs the confirmation email resent</li><li>Existing user wants to change email and needs the confirmation email resent</li></ul></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="users__userid__resendconfirmation_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/users/{userId}</span>/resendConfirmation</h4></div><div class="modal-body"><div class="alert alert-info"><p>Resend the confirmation email. There are two scenarios:</p><ul><li>New user created and needs the confirmation email resent</li><li>Existing user wants to change email and needs the confirmation email resent</li></ul></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <b>isOwner</b></div><ul class="nav nav-tabs"><li class="active"><a href="#users__userid__resendconfirmation_post_request" data-toggle="tab">Request</a></li><li><a href="#users__userid__resendconfirmation_post_response" data-toggle="tab">Response</a></li><li><a href="#users__userid__resendconfirmation_post_securedby" data-toggle="tab">Security</a></li></ul><div class="tab-content"><div class="tab-pane active" id="users__userid__resendconfirmation_post_request"><h3>URI Parameters</h3><ul><li><strong>userId</strong>: <em>required (string)</em></li></ul></div><div class="tab-pane" id="users__userid__resendconfirmation_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "Your confirmation email has been sent"
+}</code></pre><h2>HTTP status code <a href="http://httpstatus.es/403" target="_blank">403</a></h2><p>Trying to resend confirmation for other user.</p><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em><p>Error message thrown from API.</p></li><li><strong>debugInfo</strong>: <em>(array)</em><p>Array of objects containing path to wrong property and error message.</p></li><li><strong>error</strong>: <em>required (object)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "Not authorized",
+  "error": {
+    "message": "Not authorized",
+    "status": 403
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>User does not exist.</p><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em><p>Error message thrown from API.</p></li><li><strong>debugInfo</strong>: <em>(array)</em><p>Array of objects containing path to wrong property and error message.</p></li><li><strong>error</strong>: <em>required (object)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "User not found",
+  "error": {
+      "message": "User not found",
+      "status": 404
+    }
+}
+</code></pre></div><div class="tab-pane" id="users__userid__resendconfirmation_post_securedby"><h1>Secured by isOwner</h1><h3>Headers</h3><ul><li><strong>Authorization</strong>: <em>required (string)</em><p>Header to recognize if userId is matching the URI parameter userId<br><b>Format:</b> Bearer TOKEN</p></li></ul></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="recoverpassword" class="panel-title">/recoverPassword</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_recoverpassword"><span class="parent"></span>/recoverPassword</a> <span class="methods"><a href="#recoverpassword_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_recoverpassword" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#recoverpassword_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"><p>User reset password</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="recoverpassword_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent"></span>/recoverPassword</h4></div><div class="modal-body"><div class="alert alert-info"><p>User reset password</p></div><ul class="nav nav-tabs"><li class="active"><a href="#recoverpassword_post_request" data-toggle="tab">Request</a></li><li><a href="#recoverpassword_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="recoverpassword_post_request"><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>email</strong>: <em>required (string)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "email": "recover@mail.com"
+}</code></pre></div><div class="tab-pane" id="recoverpassword_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>Successfully sent password recovery mail to user email.</p><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "Your password recovery email has been sent"
+}</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em><p>Error message thrown from API.</p></li><li><strong>debugInfo</strong>: <em>(array)</em><p>Array of objects containing path to wrong property and error message.</p></li><li><strong>error</strong>: <em>required (object)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "User not found",
+  "error": {
+      "message": "User not found",
+      "status": 404
+    }
+}
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_recoverpassword__token_"><span class="parent">/recoverPassword</span>/{token}</a> <span class="methods"><a href="#recoverpassword__token__post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_recoverpassword__token_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#recoverpassword__token__post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"><p>User recover password</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="recoverpassword__token__post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent">/recoverPassword</span>/{token}</h4></div><div class="modal-body"><div class="alert alert-info"><p>User recover password</p></div><ul class="nav nav-tabs"><li class="active"><a href="#recoverpassword__token__post_request" data-toggle="tab">Request</a></li><li><a href="#recoverpassword__token__post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="recoverpassword__token__post_request"><h3>URI Parameters</h3><ul><li><strong>token</strong>: <em>required (string)</em></li></ul><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>password</strong>: <em>required (string - minLength: 8)</em><p>Password needs to have:</p><ul><li>One uppercase character</li><li>One lowercase character</li><li>One number</li></ul></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "password": "NewPassword12345"
+}</code></pre></div><div class="tab-pane" id="recoverpassword__token__post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>Successfully updated user password.</p><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "Your password has been changed"
+}</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>There two scenarios:</p><ul><li>Token does not exist</li><li>User with associated token does not exist</li></ul><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em><p>Error message thrown from API.</p></li><li><strong>debugInfo</strong>: <em>(array)</em><p>Array of objects containing path to wrong property and error message.</p></li><li><strong>error</strong>: <em>required (object)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "Recovery token not found",
+  "error": {
+    "message": "Recovery token not found",
+    "status": 404
+  }
+}</code></pre><pre><code>{
+  "message": "User not found",
+  "error": {
+    "message": "User not found",
+    "status": 404
+  }
+}</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="emailconfirm" class="panel-title">/emailConfirm</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_emailconfirm"><span class="parent"></span>/emailConfirm</a> <span class="methods"><a href="#emailconfirm_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel_emailconfirm" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#emailconfirm_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"><p>Used for email confirmation. There are two scenarios:</p><ul><li>If a user requested to change email, it will update the user email</li><li>If a new account was created and the user followed the link in his email it will confirm his email address</li></ul></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="emailconfirm_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent"></span>/emailConfirm</h4></div><div class="modal-body"><div class="alert alert-info"><p>Used for email confirmation. There are two scenarios:</p><ul><li>If a user requested to change email, it will update the user email</li><li>If a new account was created and the user followed the link in his email it will confirm his email address</li></ul></div><ul class="nav nav-tabs"><li class="active"><a href="#emailconfirm_post_request" data-toggle="tab">Request</a></li><li><a href="#emailconfirm_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="emailconfirm_post_request"><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>token</strong>: <em>required (string)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "token": "123e4567-e89b-12d3-a456-426655440000"
+}</code></pre></div><div class="tab-pane" id="emailconfirm_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "Email confirmed"
+}</code></pre><h2>HTTP status code <a href="http://httpstatus.es/400" target="_blank">400</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em><p>Error message thrown from API.</p></li><li><strong>debugInfo</strong>: <em>(array)</em><p>Array of objects containing path to wrong property and error message.</p></li><li><strong>error</strong>: <em>required (object)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "User already exists",
+  "error": {
+    "message": "User already exists",
+    "status": 400
+  }
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em><p>Error message thrown from API.</p></li><li><strong>debugInfo</strong>: <em>(array)</em><p>Array of objects containing path to wrong property and error message.</p></li><li><strong>error</strong>: <em>required (object)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "Confirmation email does not exist",
+  "error": {
+    "message": "Confirmation email does not exist",
+    "status": 404
+  }
+}</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="404" class="panel-title">/404</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_404"><span class="parent"></span>/404</a> <span class="methods"><a href="#404_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_404" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#404_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>All routes that are not documented are handled like this.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="404_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent"></span>/404</h4></div><div class="modal-body"><div class="alert alert-info"><p>All routes that are not documented are handled like this.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#404_get_request" data-toggle="tab">Request</a></li></ul><div class="tab-content"><div class="tab-pane active" id="404_get_request"><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: object</p><strong>Properties</strong><ul><li><strong>message</strong>: <em>required (string)</em></li><li><strong>error</strong>: <em>required (object)</em></li></ul><p><strong>Examples</strong>:</p><pre><code>{
+  "message": "Not found",
+  "error": {
+    "status": 404
+  }
+}</code></pre></div></div></div></div></div></div></div></div></div></div></div><div class="col-md-3"><div id="sidebar" class="hidden-print affix" role="complementary"><ul class="nav nav-pills nav-stacked"><li><a href="#authenticate">/authenticate</a></li><li><a href="#users">/users</a></li><li><a href="#recoverpassword">/recoverPassword</a></li><li><a href="#emailconfirm">/emailConfirm</a></li><li><a href="#404">/404</a></li></ul></div></div></div></div></body></html>
