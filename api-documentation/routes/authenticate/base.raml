@@ -18,42 +18,17 @@ post:
               user: object
             example: !include responses/post.json
       400:
-        description: |
-          Bad requests made for authentication. There are two scenarios.
-            - Wrong parameters in body
-            - Wrong password
+        description: Wrong password sent.
         body:
           application/json:
             type: Error
-            examples:
-              validationError: {
-                message: "Parameters error",
-                debugInfo: [{
-                  path: "email",
-                  message: "Email is required"
-                }, {
-                  path: "password",
-                  message: "Password is required"
-                }],
-                error: {
-                  message: "Parameters error",
-                  debugInfo: [{
-                    path: "email",
-                    message: "Email is required"
-                  }, {
-                    path: "password",
-                    message: "Password is required"
-                  }],
-                  status: 400
-                }
+            example: {
+              message: "Wrong password",
+              error: {
+                message: "Wrong password",
+                status: 400
               }
-              wrongPassword: {
-                "message": "Wrong password",
-                "error": {
-                  "message": "Wrong password",
-                  "status": 400
-                }
-              }
+            }
       404:
         body:
           application/json:
