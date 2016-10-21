@@ -1,0 +1,104 @@
+/authenticate:
+  post:
+    description: Superadmin login.
+    body:
+      application/json:
+        type: object
+        properties:
+          email: string
+          password: string
+        example: {
+          email: "super@mail.com",
+          password: "SuperAdminPassword123"
+        }
+    responses:
+      400:
+        body:
+          application/json:
+            type: Error
+            example: {
+              message: "Wrong password",
+              error: {
+                message: "Wrong password",
+                status: 400
+              }
+            }
+      404:
+        body:
+          application/json:
+            type: Error
+            example: !include ../../common/errors/userNotFound.json
+
+/users:
+  get:
+    securedBy: isSuperAdmin
+    queryParameters:
+      page?:
+        description: |
+          Defines which page of users to list.
+          - If not set it defaults to first page.
+        type: number
+      limit?:
+        description: |
+          Defines the number of users to show per page.
+          - If not set defaults to <b>10</b>
+        type: number
+    description: Paginated list of users.
+    responses:
+      200:
+        body:
+          application/json:
+            type: object
+            properties:
+              count:
+                type: number
+              rows:
+                type: array
+                items:
+                  properties:
+                    id: number
+                    bio?:
+                      type: string
+                      maxLength: 1000
+                    confirmed: boolean
+                    email: string
+                    firstname?: string
+                    lastname?: string
+                    createdAt: datetime
+                    updatedAt: datetime
+                    resourceId?: number
+                    image?: string
+            example: !include responses/getList.json
+  post:
+    securedBy: isSuperAdmin
+    description: |
+      User created by superadmin.
+      - User is confirmed
+      - An email is sent to the user to set a password
+    body:
+      application/json:
+        type: object
+        properties:
+          email: string
+        example: { email: "user.email@mail.com" }
+    responses:
+      201:
+        description: Successfully created user.
+        body:
+          application/json:
+            type: object
+            properties:
+              message: string
+            example: { message: "User successfully created" }
+      400:
+        description: User already exists.
+        body:
+          application/json:
+            type: Error
+            example: !include ../../common/errors/userAlreadyExists.json
+      403:
+        description: Not superadmin.
+        body:
+          application/json:
+            type: Error
+            example: !include ../../common/errors/notAuthorized.json

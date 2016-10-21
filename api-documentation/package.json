@@ -1,0 +1,13 @@
+{
+  "name": "api-documentation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "raml2html": "https://github.com/raml2html/raml2html#develop"
+  },
+  "devDependencies": {},
+  "keywords": [],
+  "author": "ECP",
+  "license": "MIT"
+}

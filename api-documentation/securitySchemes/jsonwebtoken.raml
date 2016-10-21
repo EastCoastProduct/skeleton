@@ -29,3 +29,14 @@ isOwner:
           Header to recognize if userId is matching the URI parameter userId
           <br>
           <b>Format:</b> Bearer TOKEN
+
+isSuperAdmin:
+  type: x-token
+  describedBy:
+    headers:
+      Authorization:
+        type: string
+        description: |
+          Header to recognize if superadmin
+          <br>
+          <b>Format:</b> Bearer TOKEN
