@@ -247,9 +247,6 @@ post:
         application/json:
           type: object
           properties:
-            oldEmail:
-              type: string
-              description: Users current email address.
             newEmail:
               type: string
               description: Users new email address.
@@ -293,12 +290,12 @@ post:
                     status: 400
                   }
                 }
-        404:
-          description: If user sent wrong oldEmail.
+        403:
+          description: Trying to change mail for other user.
           body:
             application/json:
               type: Error
-              example: !include ../../common/errors/userNotFound.json
+              example: !include ../../common/errors/notAuthorized.json
 
   /changePassword:
     post:
