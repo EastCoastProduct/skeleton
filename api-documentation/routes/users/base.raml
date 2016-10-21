@@ -1,42 +1,4 @@
 
-get:
-  queryParameters:
-    page?:
-      description: |
-        Defines which page of users to list.
-        - If not set it defaults to first page.
-      type: number
-    limit?:
-      description: |
-        Defines the number of users to show per page.
-        - If not set defaults to <b>10</b>
-      type: number
-  description: Paginated list of users.
-  responses:
-    200:
-      body:
-        application/json:
-          type: object
-          properties:
-            count:
-              type: number
-            rows:
-              type: array
-              items:
-                properties:
-                  id: number
-                  bio?:
-                    type: string
-                    maxLength: 1000
-                  confirmed: boolean
-                  email: string
-                  firstname?: string
-                  lastname?: string
-                  createdAt: datetime
-                  updatedAt: datetime
-                  resourceId?: number
-                  image?: string
-          example: !include responses/getList.json
 post:
   description: Create user.
   body:
