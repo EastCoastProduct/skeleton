@@ -32,6 +32,7 @@
 /users:
   get:
     securedBy: isSuperAdmin
+    description: Paginated list of users with search and filter options.
     queryParameters:
       page?:
         description: |
@@ -43,7 +44,18 @@
           Defines the number of users to show per page.
           - If not set defaults to <b>10</b>
         type: number
-    description: Paginated list of users.
+      search?:
+        description: |
+          Defines the value/s that will be used as search terms.
+          If words are separated by comma in string they will
+          be parse into multiple search terms.
+        type: string
+      confirmed?:
+        description: |
+          Can only be set to string boolean "true"/"false".
+          Used to filter confirmed or not confirmed users.
+        type: string
+
     responses:
       200:
         body:
