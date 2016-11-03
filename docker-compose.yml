@@ -2,17 +2,17 @@ version: '2'
 
 services:
   ecp_dev_db:
-    image: postgres:9.4
+    image: postgres:9.6
     container_name: ecp_dev_db
     environment:
-      POSTGRES_USER: dev_user
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ecp1950
       POSTGRES_DB: dev_db #not required, defaults to POSTGRES_USER
   ecp_test_db:
-    image: postgres:9.4
+    image: postgres:9.6
     container_name: ecp_test_db
     environment:
-      POSTGRES_USER: test_user
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ecp1950
       POSTGRES_DB: test_db #not required, defaults to POSTGRES_USER
   ecp_api:
@@ -20,10 +20,6 @@ services:
     container_name: ecp_api
     command: ./docker-start.sh
     environment:
-      DB: dev_db
-      DB_USER: dev_user
-      DB_PASSWORD: ecp1950
-      DB_NAME: dev_db
       AWS_ACCESS_KEY_ID: YOUR_ACCESS_KEY_ID
       AWS_SECRET_ACCESS_KEY: YOUR_SECRET_ACCESS_KEY
     ports:
@@ -36,9 +32,6 @@ services:
     build: ./web-skeleton
     container_name: ecp_web
     command: ./docker-start.sh
-    environment:
-      __APP_URL__: web
-      __API_URL__: api
     ports:
       - '7000:7000'
     links:
@@ -49,9 +42,6 @@ services:
     build: ./super-admin-skeleton
     container_name: ecp_superadmin
     command: ./docker-start.sh
-    environment:
-      __APP_URL__: web
-      __API_URL__: api
     ports:
       - '9000:9000'
     links:
