@@ -1,6 +1,16 @@
 version: '2'
 
 services:
+  ecp_static_files:
+    build: ./static-files
+    container_name: ecp_static_files
+    command: ./docker-start.sh
+    ports:
+      - '4000:4000'
+      - '514/udp:514/udp'
+      - '514:514'
+    volumes:
+      - ./static-files/:/home/app/src
   ecp_dev_db:
     image: postgres:9.6
     container_name: ecp_dev_db
@@ -26,6 +36,7 @@ services:
       - '3000:3000'
     links:
       - ecp_dev_db:ecp_dev_db
+      - ecp_static_files
     volumes:
       - ./api-skeleton/:/home/app/src/
   ecp_web:
@@ -36,6 +47,7 @@ services:
       - '7000:7000'
     links:
       - ecp_api:ecp_api
+      - ecp_static_files:ecp_static_files
     volumes:
       - ./web-skeleton/:/home/app/src/
   ecp_superadmin:
@@ -46,5 +58,6 @@ services:
       - '9000:9000'
     links:
       - ecp_api:ecp_api
+      - ecp_static_files:ecp_static_files
     volumes:
       - ./super-admin-skeleton/:/home/app/src/
