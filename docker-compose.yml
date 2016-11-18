@@ -1,18 +1,28 @@
 version: '2'
 
 services:
+  ecp_static_files:
+    build: ./static-files
+    container_name: ecp_static_files
+    command: ./docker-start.sh
+    ports:
+      - '4000:4000'
+      - '514/udp:514/udp'
+      - '514:514'
+    volumes:
+      - ./static-files/:/home/app/src
   ecp_dev_db:
-    image: postgres:9.4
+    image: postgres:9.6
     container_name: ecp_dev_db
     environment:
-      POSTGRES_USER: dev_user
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ecp1950
       POSTGRES_DB: dev_db #not required, defaults to POSTGRES_USER
   ecp_test_db:
-    image: postgres:9.4
+    image: postgres:9.6
     container_name: ecp_test_db
     environment:
-      POSTGRES_USER: test_user
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ecp1950
       POSTGRES_DB: test_db #not required, defaults to POSTGRES_USER
   ecp_api:
@@ -20,41 +30,34 @@ services:
     container_name: ecp_api
     command: ./docker-start.sh
     environment:
-      DB: dev_db
-      DB_USER: dev_user
-      DB_PASSWORD: ecp1950
-      DB_NAME: dev_db
       AWS_ACCESS_KEY_ID: YOUR_ACCESS_KEY_ID
       AWS_SECRET_ACCESS_KEY: YOUR_SECRET_ACCESS_KEY
     ports:
       - '3000:3000'
     links:
       - ecp_dev_db:ecp_dev_db
+      - ecp_static_files
     volumes:
       - ./api-skeleton/:/home/app/src/
   ecp_web:
     build: ./web-skeleton
     container_name: ecp_web
     command: ./docker-start.sh
-    environment:
-      __APP_URL__: web
-      __API_URL__: api
     ports:
       - '7000:7000'
     links:
       - ecp_api:ecp_api
+      - ecp_static_files:ecp_static_files
     volumes:
       - ./web-skeleton/:/home/app/src/
   ecp_superadmin:
     build: ./super-admin-skeleton
     container_name: ecp_superadmin
     command: ./docker-start.sh
-    environment:
-      __APP_URL__: web
-      __API_URL__: api
     ports:
       - '9000:9000'
     links:
       - ecp_api:ecp_api
+      - ecp_static_files:ecp_static_files
     volumes:
       - ./super-admin-skeleton/:/home/app/src/

@@ -1,0 +1,19 @@
+{
+  "name": "static-files",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.14.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js"
+  },
+  "engines": {
+    "node": ">=6.7 <7"
+  },
+  "keywords": [],
+  "author": "ECP",
+  "license": "MIT"
+}
